@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
-use Inertia\Response;
 
 class RegisteredUserController extends Controller
 {
@@ -20,7 +19,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): mixed
     {
-        if(User::count() > 1) {
+        if (User::count() > 1) {
             return redirect()->route('login');
         }
 

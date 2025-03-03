@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Enums\ClientStatus;
-//use App\Events\ClientCreatedEvent;
-//use App\Events\ClientDeletedEvent;
+use App\Events\ClientCreatedEvent;
+use App\Events\ClientDeletedEvent;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -20,8 +20,8 @@ class Client extends Model
     ];
 
     protected $dispatchesEvents = [
-//        'created' => ClientCreatedEvent::class,
-//        'deleted' => ClientDeletedEvent::class,
+        'created' => ClientCreatedEvent::class,
+        'deleted' => ClientDeletedEvent::class,
     ];
 
     public function qrContent(): Attribute

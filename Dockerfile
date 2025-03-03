@@ -6,6 +6,14 @@ WORKDIR /app
 
 RUN composer install --no-dev -o -n
 
+FROM --platform=$BUILDPLATFORM node:alpine AS frontend-builder
+
+COPY . /app
+
+WORKDIR /app
+
+RUN npm install && npm run build
+
 FROM dunglas/frankenphp:alpine
 
 ENV SUPERVISOR_PHP_COMMAND="php artisan octane:frankenphp"
@@ -43,6 +51,8 @@ RUN rm -rf /var/cache/apk/*
 WORKDIR /app
 
 COPY --from=builder /app /app
+
+COPY --from=frontend-builder /app/public /app/public
 
 COPY .docker/php.ini $PHP_INI_DIR
 

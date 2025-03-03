@@ -29,7 +29,7 @@ class ClientController extends Controller
     {
         $client = $action->handle($request->validated());
 
-        if($request->wantsJson()) {
+        if ($request->wantsJson()) {
             return response(new ClientResource($client), Response::HTTP_CREATED);
         }
 
