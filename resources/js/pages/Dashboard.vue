@@ -53,7 +53,7 @@ getClients();
                 </CardHeader>
                 <div>
                     <div class="divide-y">
-                        <ClientListItem :client="client" v-for="client in clients" :key="client?.id" />
+                        <ClientListItem @refresh="getClients" :client="client" v-for="client in clients" :key="client?.id" />
                     </div>
                 </div>
             </Card>
