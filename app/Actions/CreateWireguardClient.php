@@ -26,7 +26,7 @@ class CreateWireguardClient
             'private_key' => $privateKey,
             'public_key' => $publicKey,
             'status' => ClientStatus::Enable,
-            'expire_at' => $data['expire_at'],
+            'expire_at' => $data['expire_at'] ?? null,
         ]);
     }
 
