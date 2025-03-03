@@ -65,6 +65,9 @@ class GenerateWireguardConfigCommand extends Command
 
         $up = Process::run(['wg-quick', 'up', 'wg0']);
 
+        // $up = Process::run(['sh', '-c', '"wg syncconf wg0 <(wg-quick strip wg0)"']);
+        // $up = Process::run(['ip route add <client-address> dev wg0']);
+
         abort_unless($up->successful(), 500, $up->errorOutput());
 
         $this->info('Done.');
