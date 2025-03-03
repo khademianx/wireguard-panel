@@ -93,7 +93,7 @@ onUnmounted(() => {
                 <div class="flex items-center justify-between">
                     <div class="text-2xl font-bold text-primary">Users</div>
                     <Button as-child>
-                        <Link :href="route('client.create')">
+                        <Link :href="route('clients.create')">
                             <Plus class="w-4 h-4" />
                             New User
                         </Link>

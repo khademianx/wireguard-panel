@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import axios from 'axios';
 import { filesize } from 'filesize';
-import { ArrowDown, ArrowUp, Download, Link, Trash, Check } from 'lucide-vue-next';
+import { ArrowDown, ArrowUp, Download, Link, Trash, Check, EllipsisVertical } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { useClipboard } from '@vueuse/core';
 import { Badge } from '@/components/ui/badge/index.js';
 import { Button } from '@/components/ui/button/index.js';
 import { type Client } from '@/types';
 import ClientQrModal from '@/components/client/ClientQrModal.vue';
+import ClientOptionsButton from '@/components/client/ClientOptionsButton.vue';
 
 const props = defineProps<{
     client: Client
@@ -17,23 +18,9 @@ const { copy, copied } = useClipboard({ legacy: true });
 
 const loading = ref(false);
 
-const deleteUser = async () => {
-    const result = confirm('Are you sure want to delete this user?');
-
-    if (!result) return;
-
-    try {
-        loading.value = true;
-        await axios.delete(`/api/clients/${props.client.id}`);
-        loading.value = false;
-        emit('refresh');
-    } catch (e: any) {
-        alert(e.response.data.message);
-    }
-};
 
 const copyLink = () => {
-    copy(props.client.download_url ?? 'no link');
+    copy(props.client.qr_url ?? 'no link');
 };
 
 const emit = defineEmits(['refresh']);
@@ -43,13 +30,16 @@ const emit = defineEmits(['refresh']);
     <div
         class="grid grid-cols-3 md:grid-cols-6 items-center gap-1 md:gap-5 px-3 md:px-5 py-2 transition hover:bg-muted"
     >
-        <div>
+        <div class="col-span-full md:col-span-1">
             <div class="flex items-center">
                 <div
                     :class="{ '!bg-green-500': client.is_online }"
                     class="inline-block w-2 h-2 rounded-full bg-neutral-500 mr-2"
                 ></div>
                 <div class="font-bold">{{ client.username }}</div>
+                <div class="text-sm text-muted-foreground md:hidden ml-2" v-if="client.last_handshake">
+                    (connected {{ client.last_handshake }})
+                </div>
             </div>
             <div class="text-sm text-muted-foreground hidden md:block" v-if="client.expire_at">
                 expire {{ client.expire_at }}
@@ -81,9 +71,6 @@ const emit = defineEmits(['refresh']);
             </div>
         </div>
         <div class="col-span-full md:col-span-1 flex items-center ltr space-x-2">
-            <Button :disabled="loading" @click="deleteUser" title="Delete user" variant="destructive" size="icon">
-                <Trash class="w-5 h-5" />
-            </Button>
             <Button as-child :disabled="loading" title="Download Config" variant="secondary" size="icon">
                 <a :href="client.download_url">
                     <Download class="w-5 h-5" />
@@ -95,6 +82,7 @@ const emit = defineEmits(['refresh']);
                 <Link v-else class="w-5 h-5" />
             </Button>
             <ClientQrModal :qr-content="client.qr_content" />
+            <ClientOptionsButton @refresh="emit('refresh')" :client="client" />
         </div>
     </div>
 </template>

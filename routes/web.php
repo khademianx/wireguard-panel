@@ -14,7 +14,11 @@ Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::get('/client/create', [ClientController::class, 'create'])->name('client.create');
+Route::get('/clients/create', [ClientController::class, 'create'])->name('clients.create');
+
+Route::get('/clients/{client}/update', [ClientController::class, 'edit'])->name('clients.edit');
+
+Route::put('/clients/{client}/update', [\App\Http\Controllers\Api\ClientController::class, 'update'])->name('client.update');
 
 Route::get('c/{client:hash}', ClientQrController::class)->name('qr');
 

@@ -3,22 +3,26 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { Head, useForm, Link } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 import InputError from '@/components/InputError.vue';
 import { cn } from '@/lib/utils';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { DateFormatter, DateValue, getLocalTimeZone } from '@internationalized/date';
+import { DateFormatter, DateValue, getLocalTimeZone, parseAbsoluteToLocal } from '@internationalized/date';
 import { Calendar as CalendarIcon } from 'lucide-vue-next';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import type { BreadcrumbItem } from '@/types';
+import type { BreadcrumbItem, Client } from '@/types';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { ref } from 'vue';
 
+const props = defineProps<{
+    client: Client
+}>();
+
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Create client',
-        href: '/client/create'
+        title: 'Edit user',
+        href: '/dashboard'
     }
 ];
 
@@ -26,27 +30,27 @@ const df = new DateFormatter('en-US', {
     dateStyle: 'long'
 });
 
-const hasExpire = ref(false);
-const date = ref<DateValue>();
+const hasExpire = ref(props.client.expire_at != null);
+const date = ref<DateValue>(props.client.expire_at ? parseAbsoluteToLocal(props.client.expire_at) : null);
 
 const form = useForm({
-    username: '',
+    username: props.client.username,
     expire_at: null
 });
 
 const submit = () => {
     if (hasExpire.value) {
-        form.expire_at = date.value?.toDate();
+        form.expire_at = date.value?.toDate() ?? null;
     }
 
-    form.post(route('clients.store'), {
+    form.put(route('client.update', props.client.id), {
         preserveScroll: true
     });
 };
 </script>
 
 <template>
-    <Head title="Add User" />
+    <Head title="Edit user" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="max-w-screen-md mx-auto my-5 md:my-12">
@@ -103,7 +107,7 @@ const submit = () => {
                     </form>
                 </CardContent>
                 <CardFooter>
-                    <Button :disabled="form.processing" @click="submit">Add user</Button>
+                    <Button :disabled="form.processing" @click="submit">Save</Button>
                     <Button class="ml-2" as-child variant="secondary">
                         <Link :href="route('dashboard')">Cancel</Link>
                     </Button>

@@ -8,6 +8,9 @@ class ClientQrController extends Controller
 {
     public function __invoke(Client $client)
     {
-        return view('qr', ['client' => $client]);
+        return inertia('client/ClientQr', [
+            'client' => $client,
+            'qr_content' => $client->qr_content,
+        ]);
     }
 }

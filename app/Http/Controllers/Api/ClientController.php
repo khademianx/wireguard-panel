@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Actions\CreateWireguardClient;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\ClientStoreRequest;
+use App\Http\Requests\Client\ClientUpdateRequest;
 use App\Http\Resources\ClientResource;
 use App\Models\Client;
 use Illuminate\Http\Request;
@@ -29,7 +30,7 @@ class ClientController extends Controller
     {
         $client = $action->handle($request->validated());
 
-        if ($request->wantsJson()) {
+        if ($request->expectsJson()) {
             return response(new ClientResource($client), Response::HTTP_CREATED);
         }
 
@@ -41,11 +42,15 @@ class ClientController extends Controller
         return new ClientResource($client);
     }
 
-    public function update(ClientStoreRequest $request, Client $client)
+    public function update(ClientUpdateRequest $request, Client $client)
     {
         $client->update($request->validated());
 
-        return new ClientResource($client);
+        if ($request->expectsJson()) {
+            return response(new ClientResource($client));
+        }
+
+        return redirect(route('dashboard'));
     }
 
     public function destroy(Client $client)
