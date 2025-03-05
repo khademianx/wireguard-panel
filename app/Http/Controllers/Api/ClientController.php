@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Actions\CreateWireguardClient;
+use App\Events\ClientUpdatedEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\ClientStoreRequest;
 use App\Http\Requests\Client\ClientUpdateRequest;
@@ -45,6 +46,8 @@ class ClientController extends Controller
     public function update(ClientUpdateRequest $request, Client $client)
     {
         $client->update($request->validated());
+
+        event(new ClientUpdatedEvent($client));
 
         if ($request->expectsJson()) {
             return response(new ClientResource($client));
