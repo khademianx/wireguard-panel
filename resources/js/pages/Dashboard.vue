@@ -4,11 +4,12 @@ import { type BreadcrumbItem, type Client } from '@/types';
 import { Head, Link } from '@inertiajs/vue3';
 import axios from 'axios';
 import { onUnmounted, ref, Ref } from 'vue';
-import { ArrowLeft, ArrowRight, Loader2, Plus } from 'lucide-vue-next';
+import { ArrowLeft, ArrowRight, Loader2, Plus, Copy } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 import ClientListItem from '@/components/client/ClientListItem.vue';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import RestoreBackupModal from '@/components/client/RestoreBackupModal.vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -54,7 +55,7 @@ const getClients = async (url = '/api/clients', spinner = true) => {
 
 const search = async () => {
     if (!q.value) {
-        return getClients()
+        return getClients();
     }
 
     const url = '/api/clients?q=' + q.value;
@@ -90,14 +91,23 @@ onUnmounted(() => {
         </div>
         <div v-else class="p-4">
             <div>
-                <div class="flex items-center justify-between">
+                <div class="flex flex-col md:flex-row items-center justify-between">
                     <div class="text-2xl font-bold text-primary">Users</div>
-                    <Button as-child>
-                        <Link :href="route('clients.create')">
-                            <Plus class="w-4 h-4" />
-                            New User
-                        </Link>
-                    </Button>
+                    <div class="flex items-center space-x-2 mt-3 md:mt-0">
+                        <Button as-child>
+                            <Link :href="route('clients.create')">
+                                <Plus class="w-4 h-4 hidden md:inline-block" />
+                                New user
+                            </Link>
+                        </Button>
+                        <Button variant="outline" as-child>
+                            <a title="create backup" :href="route('backup.create')">
+                                <Copy class="w-4 h-4 hidden md:inline-block" />
+                                Backup
+                            </a>
+                        </Button>
+                        <RestoreBackupModal />
+                    </div>
                 </div>
             </div>
             <div class="my-4">

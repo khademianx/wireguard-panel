@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BackupController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ClientQrController;
 use App\Http\Controllers\DownloadConfigController;
@@ -21,6 +22,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/clients/create', [ClientController::class, 'create'])->name('clients.create');
     Route::get('/clients/{client}/update', [ClientController::class, 'edit'])->name('clients.edit');
     Route::put('/clients/{client}/update', [\App\Http\Controllers\Api\ClientController::class, 'update'])->name('client.update');
+
+    Route::get('/backup', [BackupController::class, 'create'])->name('backup.create');
+    Route::post('/backup', [BackupController::class, 'import'])->name('backup.import');
 });
 
 Route::get('c/{client:hash}', ClientQrController::class)->name('qr');
