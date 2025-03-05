@@ -2,31 +2,44 @@
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import {
+    Sidebar,
+    SidebarContent,
+    SidebarFooter,
+    SidebarHeader,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem
+} from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { Cog, Folder, LayoutGrid } from 'lucide-vue-next';
+import { Folder, LayoutGrid, User, Users } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
         href: '/dashboard',
-        icon: LayoutGrid,
+        icon: LayoutGrid
     },
     {
-        title: 'Settings',
-        href: '/settings/profile',
-        icon: Cog,
+        title: 'Admins',
+        href: '/admins',
+        icon: Users
     },
+    {
+        title: 'Profile',
+        href: '/settings/profile',
+        icon: User
+    }
 ];
 
 const footerNavItems: NavItem[] = [
     {
         title: 'Github Repo',
         href: 'https://github.com/wireguard-panel/wireguard-panel',
-        icon: Folder,
-    },
+        icon: Folder
+    }
 ];
 </script>
 

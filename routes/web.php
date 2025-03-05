@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ClientQrController;
 use App\Http\Controllers\DownloadConfigController;
@@ -14,14 +15,17 @@ Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::get('/clients/create', [ClientController::class, 'create'])->name('clients.create');
+Route::middleware('auth')->group(function () {
+    Route::resource('admins', AdminController::class)
+        ->middleware('pass')
+        ->only(['index', 'store', 'destroy']);
 
-Route::get('/clients/{client}/update', [ClientController::class, 'edit'])->name('clients.edit');
-
-Route::put('/clients/{client}/update', [\App\Http\Controllers\Api\ClientController::class, 'update'])->name('client.update');
+    Route::get('/clients/create', [ClientController::class, 'create'])->name('clients.create');
+    Route::get('/clients/{client}/update', [ClientController::class, 'edit'])->name('clients.edit');
+    Route::put('/clients/{client}/update', [\App\Http\Controllers\Api\ClientController::class, 'update'])->name('client.update');
+});
 
 Route::get('c/{client:hash}', ClientQrController::class)->name('qr');
-
 Route::get('dl/{client:hash}', DownloadConfigController::class)->name('download');
 
 require __DIR__.'/settings.php';

@@ -35,7 +35,7 @@ class CreateWireguardClient
      */
     protected function generateIp(): string
     {
-        $first = random_int(1, 255);
+        $first = 8; // random_int(1, 255);
         $second = random_int(0, 255);
         $last = random_int(0, 255);
         $ip = "10.{$first}.{$second}.{$last}";
