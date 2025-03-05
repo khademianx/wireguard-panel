@@ -21,6 +21,7 @@ class ClientUpdateRequest extends FormRequest
                 (new Unique(Client::class))->ignore($this->route()->parameter('client')->id),
             ],
             'expire_at' => ['nullable', Rule::date()->afterToday()],
+            'status' => ['required', 'string', 'in:enable,disable'],
         ];
     }
 }

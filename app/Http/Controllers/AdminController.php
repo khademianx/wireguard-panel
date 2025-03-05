@@ -6,8 +6,8 @@ use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Inertia\Inertia;
 use Illuminate\Validation\Rules;
+use Inertia\Inertia;
 
 class AdminController extends Controller
 {
@@ -19,7 +19,7 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'username' => 'required|string|lowercase|regex:/^[a-zA-Z0-9-]+$/|max:255|unique:' . User::class,
+            'username' => 'required|string|lowercase|regex:/^[a-zA-Z0-9-]+$/|max:255|unique:'.User::class.',username',
             'password' => ['required', Rules\Password::defaults()],
         ]);
 

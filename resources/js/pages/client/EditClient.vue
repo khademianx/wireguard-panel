@@ -35,6 +35,7 @@ const date = ref<DateValue>(props.client.expire_at ? parseAbsoluteToLocal(props.
 
 const form = useForm({
     username: props.client.username,
+    status: props.client.status,
     expire_at: null
 });
 
@@ -69,6 +70,15 @@ const submit = () => {
                                 <Input id="username" class="col-span-3" v-model="form.username"
                                        placeholder="test-user" />
                                 <InputError class="col-span-3 col-start-2" :message="form.errors.username" />
+                            </div>
+                            <div class="grid grid-cols-4 items-center gap-4">
+                                <div class="flex items-center space-x-2 col-start-2">
+                                    <Switch
+                                        id="status"
+                                        :model-value="form.status === 'enable'"
+                                        @update:model-value="form.status = (form.status == 'enable') ? 'disable' : 'enable'" />
+                                    <Label for="status">active</Label>
+                                </div>
                             </div>
                             <div class="grid grid-cols-4 items-center gap-4">
                                 <div class="flex items-center space-x-2 col-start-2">

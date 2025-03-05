@@ -16,9 +16,7 @@ Route::get('dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::resource('admins', AdminController::class)
-        ->middleware('pass')
-        ->only(['index', 'store', 'destroy']);
+    Route::resource('admins', AdminController::class)->only(['index', 'store', 'destroy']);
 
     Route::get('/clients/create', [ClientController::class, 'create'])->name('clients.create');
     Route::get('/clients/{client}/update', [ClientController::class, 'edit'])->name('clients.edit');
