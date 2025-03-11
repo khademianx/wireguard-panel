@@ -16,3 +16,9 @@ bash <(curl -Ls https://raw.githubusercontent.com/wireguard-panel/wireguard-pane
 bash <(curl -Ls https://raw.githubusercontent.com/wireguard-panel/wireguard-panel/refs/heads/main/upgrade.sh)
 ```
 
+
+---
+
+### Screenshot
+
+![Wireguard Panel](./screenshot.png "Screenshot")
