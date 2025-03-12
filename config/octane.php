@@ -51,7 +51,11 @@ return [
     |
     */
 
-    'https' => env('OCTANE_HTTPS', false),
+    'https' => env('USE_HTTPS', false),
+
+    'host' => env('APP_DOMAIN', '127.0.0.1'),
+
+    'port' => env('APP_PORT', '8000'),
 
     /*
     |--------------------------------------------------------------------------
