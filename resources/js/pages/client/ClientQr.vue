@@ -3,6 +3,7 @@ import { Head } from '@inertiajs/vue3';
 import vueQr from 'vue-qr/src/packages/vue-qr.vue';
 import type { Client } from '@/types';
 import AuthLayout from '@/layouts/AuthLayout.vue';
+import moment from 'moment';
 
 defineProps<{
     client: Client,
@@ -15,14 +16,17 @@ defineProps<{
 
     <AuthLayout :title="client.username">
         <div>
-            <p class="text-neutral-300 text-center mt-5">
+            <p class="text-neutral-300 text-center mb-4" v-if="client.expire_at">
+                Expire: <span class="text-primary font-bold">{{ moment(client.expire_at).fromNow() }}</span>
+            </p>
+            <p class="text-neutral-300 text-center">
                 Scan QR Code with wireguard application or download from link below.
             </p>
 
             <div class="mt-5 text-center">
                 <a :href="route('download', client.hash)"
                    class="bg-sky-500 text-white px-4 py-1.5 rounded-lg transition hover:bg-sky-600">
-                    Download Config
+                    Download
                 </a>
             </div>
 
