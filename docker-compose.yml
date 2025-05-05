@@ -1,13 +1,13 @@
 services:
     wireguard:
-        image: ahmadrezaei/wireguard-panel
+        image: khademianx/wireguard-panel
         container_name: wireguard
         restart: unless-stopped
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
-            - '${APP_PORT:-80}:8000'
-            - "${HTTPS_PORT:-443}:8000"
+            - '${APP_PORT:-8880}:8000'
+            - "${HTTPS_PORT:-8443}:8000"
             - '${WIREGUARD_PORT:-51820}:51820/udp'
         volumes:
             - '/opt/wireguard/.env:/app/.env'
